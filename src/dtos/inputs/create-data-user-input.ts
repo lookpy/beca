@@ -39,4 +39,8 @@ export class CreateDataUserInput {
 
   @Field(() => VideoInput)
   video: VideoInput;
+
+  @IsString()
+  @Field()
+  screenshot: string;
 }

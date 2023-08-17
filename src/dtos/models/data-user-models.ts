@@ -35,4 +35,7 @@ export class DataUserModel {
 
   @Field()
   video: Video;
+
+  @Field()
+  screenshot: string;
 }

@@ -11,6 +11,7 @@ interface DataUserAttributes {
   video: {
     url: string;
   };
+  screenshot: string;
 }
 
 const kittySchema = new Schema<DataUserAttributes>({
@@ -24,6 +25,7 @@ const kittySchema = new Schema<DataUserAttributes>({
   video: {
     url: String,
   },
+  screenshot: String,
 })
 
 export const DataUser = model('DataUser', kittySchema);

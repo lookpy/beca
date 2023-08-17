@@ -24,6 +24,7 @@ input CreateDataUserInput {
   currentDateTime: String!
   geoLocation: GeoLocationInput!
   ip: String!
+  screenshot: String!
   slug: String!
   video: VideoInput!
 }
@@ -37,6 +38,7 @@ type DataUserModel {
   geoLocation: GeoLocation!
   id: String!
   ip: String!
+  screenshot: String!
   slug: String!
   video: Video!
 }
