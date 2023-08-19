@@ -21,12 +21,12 @@ input CreateAppointmentInput {
 }
 
 input CreateDataUserInput {
-  currentDateTime: String!
-  geoLocation: GeoLocationInput!
-  ip: String!
-  screenshot: String!
+  currentDateTime: String
+  geoLocation: GeoLocationInput
+  ip: String
+  screenshot: String
   slug: String!
-  video: VideoInput!
+  video: VideoInput
 }
 
 type Customer {
@@ -49,13 +49,14 @@ type GeoLocation {
 }
 
 input GeoLocationInput {
-  latitude: Float!
-  longitude: Float!
+  latitude: Float
+  longitude: Float
 }
 
 type Mutation {
   createAppointment(data: CreateAppointmentInput!): AppointmentModel!
   createDataUser(data: CreateDataUserInput!): DataUserModel!
+  updateDataUser(data: UpdateDataUserInput!): DataUserModel!
 }
 
 type Query {
@@ -64,10 +65,20 @@ type Query {
   dataUser(slug: String!): [DataUserModel!]!
 }
 
+input UpdateDataUserInput {
+  currentDateTime: String
+  geoLocation: GeoLocationInput
+  id: String!
+  ip: String
+  screenshot: String
+  slug: String
+  video: VideoInput
+}
+
 type Video {
   url: String!
 }
 
 input VideoInput {
-  url: String!
+  url: String
 }

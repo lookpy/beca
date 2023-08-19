@@ -1,48 +1,54 @@
-import { IsDate, IsNumber, IsObject, IsString } from "class-validator";
+import { IsDate, IsNumber, IsObject, IsOptional, IsString } from "class-validator";
 import { Field, InputType, ObjectType } from "type-graphql";
 
 @InputType()
 export class GeoLocationInput {
+  @IsOptional()
   @IsNumber()
-  @Field()
-  latitude: number;
+  @Field({nullable: true})
+  latitude?: number;
 
+  @IsOptional()
   @IsNumber()
-  @Field()
-  longitude: number;
+  @Field({nullable: true})
+  longitude?: number;
 }
 
 @InputType()
 export class VideoInput {
   @IsString()
-  @Field()
-  url: string;
+  @Field({nullable: true})
+  url?: string;
 }
 
 @InputType()
 export class CreateDataUserInput {
+  // colocar como opcional
+  @IsOptional()
   @IsString()
-  @Field()
-  ip: string;
+  @Field({nullable: true})
+  ip?: string;
 
   @IsString()
   @Field()
   slug: string;
 
+  @IsOptional()
   @IsString()
-  @Field()
-  screenshot: string;
+  @Field({nullable: true})
+  screenshot?: string;
 
+  @IsOptional()
   @IsString()
-  @Field()
-  currentDateTime: string;
+  @Field({nullable: true})
+  currentDateTime?: string;
 
+  @IsOptional()
   @IsObject()
-  @Field(() => GeoLocationInput)
-  geoLocation: GeoLocationInput;
+  @Field({nullable: true})
+  geoLocation?: GeoLocationInput;
 
-  @Field(() => VideoInput)
-  video: VideoInput;
-
-
+  @IsOptional()
+  @Field({nullable: true})
+  video?: VideoInput;
 }
