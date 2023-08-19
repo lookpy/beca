@@ -20,6 +20,7 @@ export class DataUserResolver {
         currentDateTime: item.currentDateTime,
         geoLocation: item.geoLocation,
         video: item.video,
+        screenshot: item.screenshot,
       }
     });
 
@@ -33,6 +34,7 @@ export class DataUserResolver {
       currentDateTime: data.currentDateTime,
       geoLocation: data.geoLocation,
       video: data.video,
+      screenshot: data.screenshot,
     }
 
     const dataUser = new DataUser(dataUserData);

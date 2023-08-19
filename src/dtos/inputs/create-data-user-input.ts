@@ -31,6 +31,10 @@ export class CreateDataUserInput {
 
   @IsString()
   @Field()
+  screenshot: string;
+
+  @IsString()
+  @Field()
   currentDateTime: string;
 
   @IsObject()
@@ -40,7 +44,5 @@ export class CreateDataUserInput {
   @Field(() => VideoInput)
   video: VideoInput;
 
-  @IsString()
-  @Field()
-  screenshot: string;
+
 }

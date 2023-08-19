@@ -28,6 +28,9 @@ export class DataUserModel {
   slug: string;
 
   @Field()
+  screenshot: string;
+
+  @Field()
   currentDateTime: string;
 
   @Field()
@@ -35,7 +38,4 @@ export class DataUserModel {
 
   @Field()
   video: Video;
-
-  @Field()
-  screenshot: string;
 }
