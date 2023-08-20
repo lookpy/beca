@@ -35,17 +35,17 @@ type Customer {
 
 type DataUserModel {
   currentDateTime: String!
-  geoLocation: GeoLocation!
+  geoLocation: GeoLocation
   id: String!
   ip: String!
-  screenshot: String!
+  screenshot: String
   slug: String!
-  video: Video!
+  video: Video
 }
 
 type GeoLocation {
-  latitude: Float!
-  longitude: Float!
+  latitude: Float
+  longitude: Float
 }
 
 input GeoLocationInput {
@@ -76,7 +76,7 @@ input UpdateDataUserInput {
 }
 
 type Video {
-  url: String!
+  url: String
 }
 
 input VideoInput {

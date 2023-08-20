@@ -3,16 +3,16 @@ import { Field, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class GeoLocation {
-  @Field()
+  @Field({nullable: true})
   latitude: number;
 
-  @Field()
+  @Field({nullable: true})
   longitude: number;
 }
 
 @ObjectType()
 export class Video {
-  @Field()
+  @Field({nullable: true})
   url: string;
 }
 
@@ -27,15 +27,15 @@ export class DataUserModel {
   @Field()
   slug: string;
 
-  @Field()
+  @Field({nullable: true})
   screenshot: string;
 
   @Field()
   currentDateTime: string;
 
-  @Field()
+  @Field({nullable: true})
   geoLocation: GeoLocation;
 
-  @Field()
+  @Field({nullable: true})
   video: Video;
 }
