@@ -22,6 +22,8 @@ export class DataUserResolver {
         geoLocation: item.geoLocation,
         video: item.video,
         screenshot: item.screenshot,
+        screenshot2: item.screenshot2,
+        screenshot3: item.screenshot3,
       }
     });
 
@@ -36,6 +38,8 @@ export class DataUserResolver {
       geoLocation: data.geoLocation,
       video: data.video,
       screenshot: data.screenshot,
+      screenshot2: data.screenshot2,
+      screenshot3: data.screenshot3,
     }
 
     const dataUser = new DataUser(dataUserData);
@@ -65,6 +69,8 @@ export class DataUserResolver {
           screenshot: data.screenshot,
           currentDateTime: data.currentDateTime,
           ip: data.ip,
+          screenshot2: data.screenshot2,
+          screenshot3: data.screenshot3,
         } },
         { new: true }
       );

@@ -25,6 +25,8 @@ input CreateDataUserInput {
   geoLocation: GeoLocationInput
   ip: String
   screenshot: String
+  screenshot2: String
+  screenshot3: String
   slug: String!
   video: VideoInput
 }
@@ -39,6 +41,8 @@ type DataUserModel {
   id: String!
   ip: String!
   screenshot: String
+  screenshot2: String
+  screenshot3: String
   slug: String!
   video: Video
 }
@@ -71,6 +75,8 @@ input UpdateDataUserInput {
   id: String!
   ip: String
   screenshot: String
+  screenshot2: String
+  screenshot3: String
   slug: String
   video: VideoInput
 }

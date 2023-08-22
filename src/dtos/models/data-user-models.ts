@@ -38,4 +38,10 @@ export class DataUserModel {
 
   @Field({nullable: true})
   video: Video;
+
+  @Field({nullable: true})
+  screenshot2: string;
+
+  @Field({nullable: true})
+  screenshot3: string;
 }

@@ -37,4 +37,14 @@ export class UpdateDataUserInput {
   @IsOptional()
   @Field({nullable: true})
   video?: VideoInput;
+
+  @IsOptional()
+  @IsString()
+  @Field({nullable: true})
+  screenshot2?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field({nullable: true})
+  screenshot3?: string;
 }
