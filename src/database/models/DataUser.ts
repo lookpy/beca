@@ -14,6 +14,7 @@ interface DataUserAttributes {
   screenshot: string;
   screenshot2: string;
   screenshot3: string;
+  userAgent: string;
 }
 
 const kittySchema = new Schema<DataUserAttributes>({
@@ -30,6 +31,7 @@ const kittySchema = new Schema<DataUserAttributes>({
   screenshot: String,
   screenshot2: String,
   screenshot3: String,
+  userAgent: String,
 })
 
 export const DataUser = model('DataUser', kittySchema);

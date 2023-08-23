@@ -44,4 +44,7 @@ export class DataUserModel {
 
   @Field({nullable: true})
   screenshot3: string;
+
+  @Field({nullable: true})
+  userAgent: string;
 }

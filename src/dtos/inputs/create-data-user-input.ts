@@ -61,4 +61,9 @@ export class CreateDataUserInput {
   @IsString()
   @Field({nullable: true})
   screenshot3?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field({nullable: true})
+  userAgent?: string;
 }

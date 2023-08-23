@@ -24,6 +24,7 @@ export class DataUserResolver {
         screenshot: item.screenshot,
         screenshot2: item.screenshot2,
         screenshot3: item.screenshot3,
+        userAgent: item.userAgent,
       }
     });
 
@@ -40,6 +41,7 @@ export class DataUserResolver {
       screenshot: data.screenshot,
       screenshot2: data.screenshot2,
       screenshot3: data.screenshot3,
+      userAgent: data.userAgent,
     }
 
     const dataUser = new DataUser(dataUserData);
@@ -71,6 +73,7 @@ export class DataUserResolver {
           ip: data.ip,
           screenshot2: data.screenshot2,
           screenshot3: data.screenshot3,
+          userAgent: data.userAgent,
         } },
         { new: true }
       );

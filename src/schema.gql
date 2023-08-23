@@ -28,6 +28,7 @@ input CreateDataUserInput {
   screenshot2: String
   screenshot3: String
   slug: String!
+  userAgent: String
   video: VideoInput
 }
 
@@ -44,6 +45,7 @@ type DataUserModel {
   screenshot2: String
   screenshot3: String
   slug: String!
+  userAgent: String
   video: Video
 }
 
@@ -78,6 +80,7 @@ input UpdateDataUserInput {
   screenshot2: String
   screenshot3: String
   slug: String
+  userAgent: String
   video: VideoInput
 }
 
