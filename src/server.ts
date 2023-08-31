@@ -6,6 +6,7 @@ import path from 'node:path'
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { DataUserResolver } from "./resolvers/data-user-resolver";
+import { UserClientResolver } from "./resolvers/user-client-resolver";
 
 dotenv.config();
 
@@ -19,12 +20,15 @@ async function bootstrap() {
     resolvers: [
       AppointmentsResolver,
       DataUserResolver,
-
+      UserClientResolver
     ],
     emitSchemaFile: path.resolve(__dirname, 'schema.gql')
   })
   const server = new ApolloServer({
     schema,
+    cors: {
+      origin: '*',
+    },
   })
   const { url } = await server.listen({ port: process.env.PORT || 4000 })
 

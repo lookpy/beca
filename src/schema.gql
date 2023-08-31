@@ -32,6 +32,12 @@ input CreateDataUserInput {
   video: VideoInput
 }
 
+input CreateUserClientInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
 type Customer {
   name: String!
 }
@@ -59,7 +65,15 @@ input GeoLocationInput {
   longitude: Float
 }
 
+input LoginUserClientInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
+  CreateUserClient(data: CreateUserClientInput!): Token!
+  LoginUserClient(data: LoginUserClientInput!): Token!
+  VerifyToken(token: String!): Boolean!
   createAppointment(data: CreateAppointmentInput!): AppointmentModel!
   createDataUser(data: CreateDataUserInput!): DataUserModel!
   updateDataUser(data: UpdateDataUserInput!): DataUserModel!
@@ -69,6 +83,10 @@ type Query {
   appointments(slug: String!): AppointmentModel!
   appointmentsAll: [AppointmentModel!]!
   dataUser(slug: String!): [DataUserModel!]!
+}
+
+type Token {
+  token: String!
 }
 
 input UpdateDataUserInput {
