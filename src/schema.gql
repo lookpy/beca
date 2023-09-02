@@ -72,6 +72,7 @@ input LoginUserClientInput {
 
 type Mutation {
   CreateUserClient(data: CreateUserClientInput!): Token!
+  GetIdUserClient(token: String!): String!
   LoginUserClient(data: LoginUserClientInput!): Token!
   VerifyToken(token: String!): Boolean!
   createAppointment(data: CreateAppointmentInput!): AppointmentModel!

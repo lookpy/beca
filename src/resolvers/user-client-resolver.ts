@@ -72,4 +72,16 @@ export class UserClientResolver {
       return false
     }
   }
+
+  // pegar o id do usuario pelo token
+  @Mutation(() => String)
+  async GetIdUserClient(@Arg('token') token: string) {
+    try {
+      const decode = jwt.verify(token, process.env.SECRET!) as any
+      return decode.id
+    }
+    catch (err) {
+      throw new Error('Error to get id user')
+    }
+  }
 }
