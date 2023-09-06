@@ -24,6 +24,11 @@ export class VideoInput {
 @InputType()
 export class CreateDataUserInput {
   // colocar como opcional
+
+  @IsString()
+  @Field()
+  randomUser: string;
+
   @IsOptional()
   @IsString()
   @Field({nullable: true})

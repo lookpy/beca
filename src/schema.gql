@@ -7,7 +7,9 @@ type AppointmentModel {
   color: String!
   customer: Customer!
   description: String!
+  emailOwner: String
   image: String!
+  randomUser: String
   slug: String!
   title: String!
 }
@@ -18,12 +20,14 @@ input CreateAppointmentInput {
   image: String!
   slug: String!
   title: String!
+  tokenOwner: String!
 }
 
 input CreateDataUserInput {
   currentDateTime: String
   geoLocation: GeoLocationInput
   ip: String
+  randomUser: String!
   screenshot: String
   screenshot2: String
   screenshot3: String
@@ -42,11 +46,19 @@ type Customer {
   name: String!
 }
 
+type DataUserClientModel {
+  email: String!
+  name: String!
+  user_credits: Float!
+}
+
 type DataUserModel {
   currentDateTime: String!
+  emailOwner: String!
   geoLocation: GeoLocation
   id: String!
   ip: String!
+  randomUser: String!
   screenshot: String
   screenshot2: String
   screenshot3: String
@@ -72,7 +84,6 @@ input LoginUserClientInput {
 
 type Mutation {
   CreateUserClient(data: CreateUserClientInput!): Token!
-  GetIdUserClient(token: String!): String!
   LoginUserClient(data: LoginUserClientInput!): Token!
   VerifyToken(token: String!): Boolean!
   createAppointment(data: CreateAppointmentInput!): AppointmentModel!
@@ -81,9 +92,11 @@ type Mutation {
 }
 
 type Query {
+  DataUserClient(token: String!): DataUserClientModel!
   appointments(slug: String!): AppointmentModel!
   appointmentsAll: [AppointmentModel!]!
-  dataUser(slug: String!): [DataUserModel!]!
+  appointmentsByUser(tokenOwner: String!): [AppointmentModel!]!
+  dataUser(randomUser: String!, slug: String!): [DataUserModel!]!
 }
 
 type Token {

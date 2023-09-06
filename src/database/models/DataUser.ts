@@ -1,6 +1,8 @@
 import { Schema, model } from "mongoose";
 
 interface DataUserAttributes {
+  emailOwner: string;
+  randomUser: string;
   ip: string;
   slug: string;
   currentDateTime: string;
@@ -18,6 +20,8 @@ interface DataUserAttributes {
 }
 
 const kittySchema = new Schema<DataUserAttributes>({
+  emailOwner: String,
+  randomUser: String,
   ip: String,
   slug: String,
   currentDateTime: String,

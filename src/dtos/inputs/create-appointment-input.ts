@@ -5,6 +5,10 @@ import { Field, InputType } from "type-graphql";
 export class CreateAppointmentInput {
   @IsString()
   @Field()
+  tokenOwner: string;
+
+  @IsString()
+  @Field()
   title: string;
 
   @IsString()

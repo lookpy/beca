@@ -1,8 +1,8 @@
-import { Arg, Mutation, Resolver } from "type-graphql";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import bcrypt from 'bcrypt';
 import { UserClient } from "../database/models/UserClient";
 import jwt from 'jsonwebtoken';
-import { Token } from "../dtos/models/user-client-models";
+import { DataUserClientModel, Token } from "../dtos/models/user-client-models";
 import { CreateUserClientInput, LoginUserClientInput } from "../dtos/inputs/create-user-client-input";
 
 @Resolver()
@@ -14,10 +14,14 @@ export class UserClientResolver {
       throw new Error('Email already registered');
     }
 
+    // criar um usuário não identificável para colocar no slug
+    const randomUser = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+
     const userClient = await UserClient.create({
       name: data.name,
       email: data.email,
-      password: bcrypt.hashSync(data.password, 10)
+      password: bcrypt.hashSync(data.password, 10),
+      randomUser: randomUser
     })
 
     try {
@@ -73,15 +77,31 @@ export class UserClientResolver {
     }
   }
 
-  // pegar o id do usuario pelo token
-  @Mutation(() => String)
-  async GetIdUserClient(@Arg('token') token: string) {
-    try {
-      const decode = jwt.verify(token, process.env.SECRET!) as any
-      return decode.id
+  // pegar os dados do usuário pelo token
+  @Query(() => DataUserClientModel)
+  async DataUserClient(@Arg('token') token: string) {
+    // decodificar token do usuário
+    const decode = jwt.verify(token, process.env.SECRET!) as any
+
+    const id = decode.id
+
+    if (!id) {
+      throw new Error('Token invalid')
     }
-    catch (err) {
-      throw new Error('Error to get id user')
+
+    const client = await UserClient.findOne({ _id: id })
+
+    if (!client) {
+      throw new Error('User not found')
     }
+
+    const dataUserClient = {
+      name: client.name,
+      email: client.email,
+      user_credits: client.user_credits
+    } as DataUserClientModel
+
+    return dataUserClient
   }
+
 }

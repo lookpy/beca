@@ -19,6 +19,12 @@ export class Video {
 @ObjectType()
 export class DataUserModel {
   @Field()
+  emailOwner: string;
+
+  @Field()
+  randomUser: string;
+
+  @Field()
   id: string;
   
   @Field()
