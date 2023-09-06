@@ -49,6 +49,7 @@ export class AppointmentsResolver {
       return {
         emailOwner: item.emailOwner,
         randomUser: item.randomUser,
+        date: item.date,
         title: item.title,
         slug: item.slug,
         color: item.color,
@@ -102,6 +103,10 @@ export class AppointmentsResolver {
     const randomUser = user.randomUser
     const emailOwner = user.email
 
+    // horário da criação da página
+
+    const date = new Date()
+
     const existingPage = await Page.find({ slug: data.slug });
     // se o usuário já criou uma página com o mesmo slug, retornar erro
     existingPage.forEach((item) => {
@@ -117,6 +122,7 @@ export class AppointmentsResolver {
     const appointment = {
       emailOwner: emailOwner,
       randomUser: randomUser,
+      date: date,
       title: data.title,
       slug: data.slug,
       color: data.color,

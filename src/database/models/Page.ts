@@ -8,11 +8,13 @@ interface PageAttributes {
   color: string;
   image: string;
   description: string;
+  date: Date;
 }
 
 const kittySchema = new Schema<PageAttributes>({
   emailOwner: String,
   randomUser: String,
+  date: Date,
   title: String,
   slug: String,
   color: String,

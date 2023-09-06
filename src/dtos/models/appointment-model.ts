@@ -7,6 +7,9 @@ export class AppointmentModel {
 
   @Field({ nullable: true })
   randomUser: string;
+
+  @Field({nullable: true})
+  date: Date;
   
   @Field()
   title: string;
