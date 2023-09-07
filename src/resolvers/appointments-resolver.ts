@@ -10,12 +10,13 @@ import { UserClient } from "../database/models/UserClient";
 @Resolver(() => AppointmentModel)
 export class AppointmentsResolver {
   @Query(() => AppointmentModel)
-  async appointments(@Arg('slug') slug: string) {
-    const page = await Page.findOne({ slug: slug });
+  async appointments(@Arg('slug') slug: string, @Arg('randomUser') randomUser: string) {
+    const page = await Page.findOne({ slug: slug, randomUser: randomUser });
 
     if (!page) { throw new Error("Page not found"); }
 
     const appointment = {
+      emailOwner: page.emailOwner,
       randomUser: page.randomUser,
       title: page.title,
       slug: page.slug,

@@ -99,7 +99,7 @@ type Mutation {
 
 type Query {
   DataUserClient(token: String!): DataUserClientModel!
-  appointments(slug: String!): AppointmentModel!
+  appointments(randomUser: String!, slug: String!): AppointmentModel!
   appointmentsAll: [AppointmentModel!]!
   appointmentsByUser(tokenOwner: String!): [AppointmentModel!]!
   dataUser(randomUser: String!, slug: String!): [DataUserModel!]!
