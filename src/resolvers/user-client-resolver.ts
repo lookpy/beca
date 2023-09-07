@@ -14,8 +14,8 @@ export class UserClientResolver {
       throw new Error('Email already registered');
     }
 
-    // criar um usuário não identificável para colocar no slug
-    const randomUser = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+    // criar um usuário não identificável para colocar no slug com 6 caracteres não usar caracteres que mexam com a url
+    const randomUser =  Math.random().toString(36).substring(2, 8)
 
     const userClient = await UserClient.create({
       name: data.name,
