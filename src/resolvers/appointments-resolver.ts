@@ -10,13 +10,15 @@ import { UserClient } from "../database/models/UserClient";
 @Resolver(() => AppointmentModel)
 export class AppointmentsResolver {
   @Query(() => AppointmentModel)
-  async appointments(@Arg('slug') slug: string, @Arg('randomUser') randomUser: string) {
-    const page = await Page.findOne({ slug: slug, randomUser: randomUser });
+  async appointments(@Arg('tokenPage') tokenPage: string) {
+    const page = await Page.findOne({ tokenPage: tokenPage });
 
     if (!page) { throw new Error("Page not found"); }
 
     const appointment = {
+      tokenPage: page.tokenPage,
       emailOwner: page.emailOwner,
+      date: page.date,
       randomUser: page.randomUser,
       title: page.title,
       slug: page.slug,
@@ -48,6 +50,7 @@ export class AppointmentsResolver {
 
     const appointments = page.map((item) => {
       return {
+        tokenPage: item.tokenPage,
         emailOwner: item.emailOwner,
         randomUser: item.randomUser,
         date: item.date,
@@ -108,19 +111,14 @@ export class AppointmentsResolver {
 
     const date = new Date()
 
-    const existingPage = await Page.find({ slug: data.slug });
-    // se o usuário já criou uma página com o mesmo slug, retornar erro
-    existingPage.forEach((item) => {
-      if (item.randomUser === user.randomUser) {
-        throw new Error("Page already exists")
-      }
-    })
-
     // verificar se o usuário tem créditos suficientes para criar uma nova página
     // cada página criada consome 180 créditos
     if (credits < 180) { throw new Error("Insufficient credits") }
 
+    const tokenPage = Math.random().toString(36).substring(2, 8)
+
     const appointment = {
+      tokenPage: tokenPage,
       emailOwner: emailOwner,
       randomUser: randomUser,
       date: date,

@@ -13,6 +13,7 @@ type AppointmentModel {
   randomUser: String
   slug: String!
   title: String!
+  tokenPage: String
 }
 
 input CreateAppointmentInput {
@@ -33,6 +34,7 @@ input CreateDataUserInput {
   screenshot2: String
   screenshot3: String
   slug: String!
+  tokenPage: String!
   userAgent: String
   video: VideoInput
 }
@@ -64,6 +66,7 @@ type DataUserModel {
   screenshot2: String
   screenshot3: String
   slug: String!
+  tokenPage: String!
   userAgent: String
   video: Video
 }
@@ -99,10 +102,10 @@ type Mutation {
 
 type Query {
   DataUserClient(token: String!): DataUserClientModel!
-  appointments(randomUser: String!, slug: String!): AppointmentModel!
+  appointments(tokenPage: String!): AppointmentModel!
   appointmentsAll: [AppointmentModel!]!
   appointmentsByUser(tokenOwner: String!): [AppointmentModel!]!
-  dataUser(randomUser: String!, slug: String!): [DataUserModel!]!
+  dataUser(randomUser: String!, tokenPage: String!): [DataUserModel!]!
 }
 
 type Token {

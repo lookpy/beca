@@ -2,6 +2,7 @@ import { Schema, model } from "mongoose";
 
 interface PageAttributes {
   emailOwner: string;
+  tokenPage: string;
   randomUser: string;
   title: string;
   slug: string;
@@ -13,6 +14,7 @@ interface PageAttributes {
 
 const kittySchema = new Schema<PageAttributes>({
   emailOwner: String,
+  tokenPage: String,
   randomUser: String,
   date: Date,
   title: String,

@@ -9,9 +9,9 @@ import { UserClient } from "../database/models/UserClient";
 @Resolver(() => DataUserModel)
 export class DataUserResolver {
   @Query(() => [DataUserModel])
-  async dataUser(@Arg('slug') slug: string, @Arg('randomUser') randomUser: string) {
+  async dataUser(@Arg('tokenPage') tokenPage: string, @Arg('randomUser') randomUser: string) {
     // pesquisar o usuário randomUser junto com o slug
-    const dataUsers = await DataUser.find({ slug: slug, randomUser: randomUser });
+    const dataUsers = await DataUser.find({ tokenPage: tokenPage, randomUser: randomUser });
 
     if (!dataUsers) { throw new Error("Page not found") }
 
@@ -19,6 +19,7 @@ export class DataUserResolver {
       return {
         emailOwner: item.emailOwner,
         randomUser: item.randomUser,
+        tokenPage: item.tokenPage,
         id: item._id,
         ip: item.ip,
         slug: item.slug,
@@ -46,6 +47,7 @@ export class DataUserResolver {
     const dataUserData = {
       emailOwner: user.email,
       randomUser: user.randomUser,
+      tokenPage: data.tokenPage,
       ip: data.ip,
       slug: data.slug,
       currentDateTime: data.currentDateTime,

@@ -25,6 +25,9 @@ export class DataUserModel {
   randomUser: string;
 
   @Field()
+  tokenPage: string;
+
+  @Field()
   id: string;
   
   @Field()

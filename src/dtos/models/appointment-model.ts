@@ -6,6 +6,9 @@ export class AppointmentModel {
   emailOwner: string;
 
   @Field({ nullable: true })
+  tokenPage: string;
+
+  @Field({ nullable: true })
   randomUser: string;
 
   @Field({nullable: true})
