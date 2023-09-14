@@ -98,10 +98,10 @@ export class UserClientResolver {
     const dataUserClient = {
       name: client.name,
       email: client.email,
-      user_credits: client.user_credits
+      user_credits: client.user_credits,
+      randomUser: client.randomUser
     } as DataUserClientModel
 
     return dataUserClient
   }
-
 }

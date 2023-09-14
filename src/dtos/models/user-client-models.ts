@@ -10,6 +10,9 @@ export class DataUserClientModel {
 
   @Field()
   user_credits: number;
+
+  @Field()
+  randomUser: string;
 }
 
 @ObjectType()

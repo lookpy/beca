@@ -52,6 +52,7 @@ type Customer {
 type DataUserClientModel {
   email: String!
   name: String!
+  randomUser: String!
   user_credits: Float!
 }
 
