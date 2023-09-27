@@ -26,7 +26,8 @@ export class UserClientResolver {
 
     try {
       const token = jwt.sign({ id: userClient._id }, process.env.SECRET!, {
-        expiresIn: 86400
+        // expira em 30 dias
+        expiresIn: 86400 * 30
       })
 
       return { token }
@@ -53,7 +54,8 @@ export class UserClientResolver {
 
     try {
       const token = jwt.sign({ id: findUserClient._id }, process.env.SECRET!, {
-        expiresIn: 86400
+        // expira em 30 dias
+        expiresIn: 86400 * 30
       })
 
       return { token }

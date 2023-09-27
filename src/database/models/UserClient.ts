@@ -12,7 +12,7 @@ const kittySchema = new Schema<UserClientAttributes>({
   name: String,
   email: { type: String, unique: true },
   password: String,
-  user_credits: { type: Number, default: 500 },
+  user_credits: { type: Number, default: 5000 },
   randomUser: String,
 })
 
