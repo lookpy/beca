@@ -106,4 +106,29 @@ export class UserClientResolver {
 
     return dataUserClient
   }
+
+  // atualizar os créditos do usuário pelo email
+  @Mutation(() => DataUserClientModel)
+  async UpdateUserCredits(@Arg('email') email: string, @Arg('credits') credits: number) {
+    const client = await UserClient.findOne({ email: email })
+
+    if (!client) {
+      throw new Error('User not found')
+    }
+
+    const creditsTotal = client.user_credits + credits
+
+    client.user_credits = creditsTotal
+
+    await client.save()
+
+    const dataUserClient = {
+      name: client.name,
+      email: client.email,
+      user_credits: client.user_credits,
+      randomUser: client.randomUser
+    } as DataUserClientModel
+
+    return dataUserClient
+  }
 }

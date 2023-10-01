@@ -108,4 +108,31 @@ export class DataUserResolver {
       throw error;
     }
   }
+
+  @Query(() => [DataUserModel])
+  async dataUsersByEmail(@Arg('email') email: string) {
+    const dataUsers = await DataUser.find({ emailOwner: email });
+
+    if (!dataUsers) { throw new Error("Page not found") }
+
+    const dataUser = dataUsers.map((item) => {
+      return {
+        emailOwner: item.emailOwner,
+        randomUser: item.randomUser,
+        tokenPage: item.tokenPage,
+        id: item._id,
+        ip: item.ip,
+        slug: item.slug,
+        currentDateTime: item.currentDateTime,
+        geoLocation: item.geoLocation,
+        video: item.video,
+        screenshot: item.screenshot,
+        screenshot2: item.screenshot2,
+        screenshot3: item.screenshot3,
+        userAgent: item.userAgent,
+      }
+    });
+
+    return dataUser
+  }
 }

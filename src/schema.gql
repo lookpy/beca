@@ -95,6 +95,7 @@ input LoginUserClientInput {
 type Mutation {
   CreateUserClient(data: CreateUserClientInput!): Token!
   LoginUserClient(data: LoginUserClientInput!): Token!
+  UpdateUserCredits(credits: Float!, email: String!): DataUserClientModel!
   VerifyToken(token: String!): Boolean!
   createAppointment(data: CreateAppointmentInput!): AppointmentModel!
   createDataUser(data: CreateDataUserInput!): DataUserModel!
@@ -107,6 +108,7 @@ type Query {
   appointmentsAll: [AppointmentModel!]!
   appointmentsByUser(tokenOwner: String!): [AppointmentModel!]!
   dataUser(randomUser: String!, tokenPage: String!): [DataUserModel!]!
+  dataUsersByEmail(email: String!): [DataUserModel!]!
 }
 
 type Token {
