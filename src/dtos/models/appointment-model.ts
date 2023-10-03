@@ -28,4 +28,7 @@ export class AppointmentModel {
 
   @Field()
   description: string;
+
+  @Field({ nullable: true })
+  url_product: string;
 }

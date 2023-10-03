@@ -14,6 +14,7 @@ type AppointmentModel {
   slug: String!
   title: String!
   tokenPage: String
+  url_product: String
 }
 
 input CreateAppointmentInput {
@@ -23,6 +24,7 @@ input CreateAppointmentInput {
   slug: String!
   title: String!
   tokenOwner: String!
+  url_product: String
 }
 
 input CreateDataUserInput {

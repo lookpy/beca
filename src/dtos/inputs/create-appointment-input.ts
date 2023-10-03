@@ -1,4 +1,4 @@
-import { IsDate, IsNumber, IsString } from "class-validator";
+import { IsDate, IsNumber, IsOptional, IsString } from "class-validator";
 import { Field, InputType } from "type-graphql";
 
 @InputType()
@@ -26,4 +26,9 @@ export class CreateAppointmentInput {
   @IsString()
   @Field()
   description: string;
+
+  @IsOptional()
+  @IsString()
+  @Field({ nullable: true })
+  url_product?: string;
 }

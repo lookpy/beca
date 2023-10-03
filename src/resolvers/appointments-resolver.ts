@@ -25,6 +25,7 @@ export class AppointmentsResolver {
       color: page.color,
       image: page.image,
       description: page.description,
+      url_product: page.url_product,
     }
 
     return appointment
@@ -89,8 +90,6 @@ export class AppointmentsResolver {
 
   @Mutation(() => AppointmentModel)
   async createAppointment(@Arg('data') data: CreateAppointmentInput) {
-
-
     // decodificar token do usuário
     const token = data.tokenOwner
     const decode = jwt.verify(token, process.env.SECRET!) as any
@@ -127,6 +126,7 @@ export class AppointmentsResolver {
       color: data.color,
       image: data.image,
       description: data.description,
+      url_product: data.url_product,
     }
 
     const page = new Page(appointment);

@@ -10,6 +10,7 @@ interface PageAttributes {
   image: string;
   description: string;
   date: Date;
+  url_product: string;
 }
 
 const kittySchema = new Schema<PageAttributes>({
@@ -22,6 +23,7 @@ const kittySchema = new Schema<PageAttributes>({
   color: String,
   image: String,
   description: String,
+  url_product: String,
 })
 
 export const Page = model('Page', kittySchema);
