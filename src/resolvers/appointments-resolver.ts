@@ -15,7 +15,11 @@ interface MetaData {
 }
 
 async function getMetaData(url: string): Promise<MetaData> {
-  const response = await axios.get(url);
+  const response = await axios.get(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
+    }
+  });
   const $ = cheerio.load(response.data);
   const metaData: MetaData = {};
 
