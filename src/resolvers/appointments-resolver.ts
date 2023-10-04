@@ -198,13 +198,19 @@ export class AppointmentsResolver {
 
      const metaData = await getMetaData(data.url_product);
 
+     const dominio = data.url_product.split("/")[2]
+
+     const removerSubdominio = dominio.split(".")
+
+     const slug = removerSubdominio[1] + "." + removerSubdominio[2]
+
     const appointment = {
       tokenPage: tokenPage,
       emailOwner: emailOwner,
       randomUser: randomUser,
       date: date,
       title: metaData['og:title'],
-      slug: "mercadolivre.com",
+      slug: slug,
       color: "#000000",
       image: metaData['og:image'],
       description: metaData['og:description'],
