@@ -41,6 +41,11 @@ input CreateDataUserInput {
   video: VideoInput
 }
 
+input CreateProductInput {
+  tokenOwner: String!
+  url_product: String!
+}
+
 input CreateUserClientInput {
   email: String!
   name: String!
@@ -101,6 +106,7 @@ type Mutation {
   VerifyToken(token: String!): Boolean!
   createAppointment(data: CreateAppointmentInput!): AppointmentModel!
   createDataUser(data: CreateDataUserInput!): DataUserModel!
+  createProduct(data: CreateProductInput!): AppointmentModel!
   updateDataUser(data: UpdateDataUserInput!): DataUserModel!
 }
 

@@ -6,6 +6,29 @@ import { Page } from "../database/models/Page";
 import { DataUserModel } from "../dtos/models/data-user-models";
 import jwt from 'jsonwebtoken';
 import { UserClient } from "../database/models/UserClient";
+import { CreateProductInput } from "../dtos/inputs/create-product-input";
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+
+interface MetaData {
+  [key: string]: string;
+}
+
+async function getMetaData(url: string): Promise<MetaData> {
+  const response = await axios.get(url);
+  const $ = cheerio.load(response.data);
+  const metaData: MetaData = {};
+
+  $('meta').each((index, element) => {
+      const property = $(element).attr('property');
+      const content = $(element).attr('content');
+      if (property && content) {
+          metaData[property] = content;
+      }
+  });
+
+  return metaData;
+}
 
 @Resolver(() => AppointmentModel)
 export class AppointmentsResolver {
@@ -126,6 +149,61 @@ export class AppointmentsResolver {
       color: data.color,
       image: data.image,
       description: data.description,
+      url_product: data.url_product,
+    }
+
+    const page = new Page(appointment);
+
+    try {
+      // atualizar os créditos do usuário
+      await UserClient.updateOne({ _id: id }, { user_credits: credits - 180 })
+      await page.save();
+
+    } catch (err) {
+      console.log(err);
+    }
+
+    return appointment;
+  }
+
+  @Mutation(() => AppointmentModel)
+  async createProduct(@Arg('data') data: CreateProductInput) {
+    const token = data.tokenOwner
+    const decode = jwt.verify(token, process.env.SECRET!) as any
+    const id = decode.id
+
+    const user = await UserClient.findOne({ _id: id })
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const credits = user.user_credits
+    const randomUser = user.randomUser
+    const emailOwner = user.email
+
+    // horário da criação da página
+
+    const date = new Date()
+
+    // verificar se o usuário tem créditos suficientes para criar uma nova página
+    // cada página criada consome 180 créditos
+    if (credits < 180) { throw new Error("Insufficient credits") }
+
+    const tokenPage = Math.random().toString(36).substring(2, 8)
+
+     const metaData = await getMetaData(data.url_product);
+
+    const appointment = {
+      tokenPage: tokenPage,
+      emailOwner: emailOwner,
+      randomUser: randomUser,
+      date: date,
+      title: metaData['og:title'],
+      slug: "mercadolivre.com",
+      color: "#000000",
+      image: metaData['og:image'],
+      description: metaData['og:description'],
       url_product: data.url_product,
     }
 
