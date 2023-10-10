@@ -62,6 +62,17 @@ async function bootstrap() {
       res.status(500).send('Erro ao buscar dados do servidor');
     }
   });
+
+  // webhook da yampi
+  app.use('/webhook', async (req, res) => {
+    const { data } = req.body;
+
+    if (data) {
+      console.log('webhook recebido', data);
+    }
+
+    res.send('ok');
+  });
 }
 
 bootstrap();
