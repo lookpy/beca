@@ -141,7 +141,7 @@ async function bootstrap() {
         // valor em centavos
         const amount = pi.amount;
 
-        if (pi.charges.data.length === 0) {
+        if (pi.charges === undefined) {
           console.log('Não há cobrança');
           res.sendStatus(200);
         }
