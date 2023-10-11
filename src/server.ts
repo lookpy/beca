@@ -143,7 +143,8 @@ async function bootstrap() {
 
         if (pi.charges === undefined) {
           console.log('Não há cobrança');
-          res.sendStatus(200);
+           res.sendStatus(200);
+           return;
         }
 
         pi.charges.data.forEach(async (charge) => {
