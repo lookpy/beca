@@ -139,6 +139,8 @@ async function bootstrap() {
         // valor em centavos
         const amount = pi.amount;
 
+        console.log(pi)
+
         pi.charges.data.forEach(async (charge) => {
           const email = charge.billing_details.email
 
