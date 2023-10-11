@@ -145,16 +145,15 @@ async function bootstrap() {
 
         if (amount === 1000) {
           // adicionar mais 500 créditos
-          stripe.charges.list(
+          const charges = await stripe.charges.list(
             { payment_intent: pi.id },
-            async (err, charges) => {
-              // Aqui você pode acessar as informações de billing_details
-              const billingDetails = charges.data[0].billing_details;
-              const email = billingDetails.email;
-              const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 500 } }, { new: true });
-            },
           );
+          // Aqui você pode acessar as informações de billing_details
+          const billingDetails = charges.data[0].billing_details;
+          const email = billingDetails.email;
+          const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 500 } }, { new: true });
 
+          console.log(updateCredits);
         }
 
         // atualizar o banco de dados os créditos do usuário
