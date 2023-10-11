@@ -40,7 +40,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   typescript: true,
 });
 
-const webhookSecret = 'whsec_c160ff6af186c8a80c10408898b91c320458f639e3943fc91a62fea632914889';
 
 async function bootstrap() {
   const app = express();
