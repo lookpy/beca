@@ -130,7 +130,7 @@ async function bootstrap() {
       const data: Stripe.Event.Data = event.data;
       const eventType: string = event.type;
 
-      if (eventType === "payment_intent.succeeded") {
+      if (eventType === "charge.succeeded") {
         // Cast the event into a PaymentIntent to make use of the types.
         const pi: PaymentIntentTotal = data.object as PaymentIntentTotal
         // Funds have been captured
