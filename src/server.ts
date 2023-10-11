@@ -130,7 +130,7 @@ async function bootstrap() {
       const data: Stripe.Event.Data = event.data;
       const eventType: string = event.type;
 
-      if (eventType === "charge.succeeded") {
+      if (eventType === "payment_intent.succeeded") {
         // Cast the event into a PaymentIntent to make use of the types.
         const pi: PaymentIntentTotal = data.object as PaymentIntentTotal
         // Funds have been captured
@@ -139,7 +139,10 @@ async function bootstrap() {
         // valor em centavos
         const amount = pi.amount;
 
-        console.log(pi)
+        if (pi.charges.data.length === 0) {
+          console.log('Não há cobrança');
+          res.sendStatus(200);
+        }
 
         pi.charges.data.forEach(async (charge) => {
           const email = charge.billing_details.email
