@@ -2,7 +2,7 @@ import { ApolloServer } from "apollo-server-express";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { AppointmentsResolver } from "./resolvers/appointments-resolver";
-import path from 'node:path'
+import path from 'path'
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { DataUserResolver } from "./resolvers/data-user-resolver";
@@ -10,18 +10,47 @@ import { UserClientResolver } from "./resolvers/user-client-resolver";
 import express from "express";
 import cors from "cors";
 import axios from "axios";
+import Stripe from "stripe";
+import bodyParser from "body-parser";
+import { UserClient } from "./database/models/UserClient";
 dotenv.config();
+
+interface PaymentIntentTotal extends Stripe.PaymentIntent {
+  charges: {
+    data: {
+      amount: number;
+      billing_details: {
+        address: {
+          city: string;
+          country: string;
+          line1: string;
+          line2: string;
+          postal_code: string;
+          state: string;
+        };
+        email: string;
+        name: string;
+        phone: string;
+      };
+    }[];
+  }
+}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2023-08-16",
+  typescript: true,
+});
+
+const webhookSecret = 'whsec_c160ff6af186c8a80c10408898b91c320458f639e3943fc91a62fea632914889';
 
 async function bootstrap() {
   const app = express();
   const MONGO_URL = process.env.MONGO_URL!;
 
   app.use(cors());
-  app.use(express.json());
 
   await mongoose.connect(MONGO_URL)
-  .then(() => console.log('MongoDB connected'))
-  
+    .then(() => console.log('MongoDB connected'))
+
   const schema = await buildSchema({
     resolvers: [
       AppointmentsResolver,
@@ -38,12 +67,12 @@ async function bootstrap() {
   await server.start();
 
   server.applyMiddleware({ app });
-  
-  app.listen({port : process.env.PORT || 4000}, () => {
+
+  app.listen({ port: process.env.PORT || 4000 }, () => {
     console.log(`🚀 Server ready at http://localhost:${process.env.PORT || 4000}${server.graphqlPath}`)
   })
 
-  app.use('/page', async (req, res) => {
+  app.use('/page', express.json(), async (req, res) => {
     const url = req.body.data;
 
     try {
@@ -54,7 +83,7 @@ async function bootstrap() {
           'User-Agent': userAgent,
         }
       });
-      
+
       const data = response.data;
       res.send(data);
     } catch (error) {
@@ -63,16 +92,77 @@ async function bootstrap() {
     }
   });
 
-  // webhook da yampi
-  app.use('/webhook', async (req, res) => {
-    const { data } = req.body;
-
-    if (data) {
-      console.log('webhook recebido', data);
+  app.use(
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ): void => {
+      if (req.originalUrl === '/webhook') {
+        next();
+      } else {
+        express.json()(req, res, next);
+      }
     }
+  );
 
-    res.send('ok');
-  });
+  app.post(
+    "/webhook",
+    // Use body-parser to retrieve the raw body as a buffer.
+    bodyParser.raw({ type: "application/json" }),
+    async (req: express.Request, res: express.Response): Promise<void> => {
+      // Retrieve the event by verifying the signature using the raw body and secret.
+      let event: Stripe.Event;
+
+      try {
+        event = stripe.webhooks.constructEvent(
+          req.body,
+          req.headers["stripe-signature"]!,
+          process.env.STRIPE_WEBHOOK_SECRET!
+        );
+      } catch (err) {
+        console.log(err)
+        console.log(`⚠️  Webhook signature verification failed.`);
+        res.sendStatus(400);
+        return;
+      }
+
+      // Extract the data from the event.
+      const data: Stripe.Event.Data = event.data;
+      const eventType: string = event.type;
+
+      if (eventType === "payment_intent.succeeded") {
+        // Cast the event into a PaymentIntent to make use of the types.
+        const pi: PaymentIntentTotal = data.object as PaymentIntentTotal
+        // Funds have been captured
+        // Fulfill any orders, e-mail receipts, etc
+        // To cancel the payment after capture you will need to issue a Refund (https://stripe.com/docs/api/refunds).
+        // valor em centavos
+        const amount = pi.amount;
+
+        pi.charges.data.forEach(async (charge) => {
+          const email = charge.billing_details.email
+
+          if (amount === 1000) {
+            // adicionar mais 500 créditos
+            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 500} }, { new: true });
+
+            console.log(updateCredits);
+          }
+        });
+
+        // atualizar o banco de dados os créditos do usuário
+        console.log(`🔔  Webhook received: ${pi.object} ${pi.status}!`);
+        console.log("💰 Payment captured!");
+      } else if (eventType === "payment_intent.payment_failed") {
+        // Cast the event into a PaymentIntent to make use of the types.
+        const pi: Stripe.PaymentIntent = data.object as Stripe.PaymentIntent;
+        console.log(`🔔  Webhook received: ${pi.object} ${pi.status}!`);
+        console.log("❌ Payment failed.");
+      }
+      res.sendStatus(200);
+    }
+  );
 }
 
 bootstrap();
