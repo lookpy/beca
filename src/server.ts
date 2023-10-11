@@ -156,6 +156,19 @@ async function bootstrap() {
           console.log(updateCredits);
         }
 
+        if (amount === 1800) {
+          // adicionar mais 1000 créditos
+          const charges = await stripe.charges.list(
+            { payment_intent: pi.id },
+          );
+          // Aqui você pode acessar as informações de billing_details
+          const billingDetails = charges.data[0].billing_details;
+          const email = billingDetails.email;
+          const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 1000 } }, { new: true });
+
+          console.log(updateCredits);
+        }
+
         // atualizar o banco de dados os créditos do usuário
         console.log(`🔔  Webhook received: ${pi.object} ${pi.status}!`);
         console.log("💰 Payment captured!");
