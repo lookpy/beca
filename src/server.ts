@@ -141,22 +141,21 @@ async function bootstrap() {
         // valor em centavos
         const amount = pi.amount;
 
-        if (pi.charges === undefined) {
-          console.log('Não há cobrança');
-           res.sendStatus(200);
-           return;
+        // Recupera as cobranças associadas ao payment_intent
+
+        if (amount === 1000) {
+          // adicionar mais 500 créditos
+          stripe.charges.list(
+            { payment_intent: pi.id },
+            async (err, charges) => {
+              // Aqui você pode acessar as informações de billing_details
+              const billingDetails = charges.data[0].billing_details;
+              const email = billingDetails.email;
+              const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 500 } }, { new: true });
+            },
+          );
+
         }
-
-        pi.charges.data.forEach(async (charge) => {
-          const email = charge.billing_details.email
-
-          if (amount === 1000) {
-            // adicionar mais 500 créditos
-            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 500} }, { new: true });
-
-            console.log(updateCredits);
-          }
-        });
 
         // atualizar o banco de dados os créditos do usuário
         console.log(`🔔  Webhook received: ${pi.object} ${pi.status}!`);
