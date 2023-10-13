@@ -188,6 +188,7 @@ async function bootstrap() {
     bodyParser.raw({ type: "application/json" }),
     async (req: express.Request, res: express.Response): Promise<void> => {
       const data = req.body;
+      console.log(data);
 
       const customer = data.customer.data
 
