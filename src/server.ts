@@ -181,6 +181,14 @@ async function bootstrap() {
       res.sendStatus(200);
     }
   );
+
+  app.post(
+    "/webhook-yampi",
+    // Use body-parser to retrieve the raw body as a buffer.
+    bodyParser.raw({ type: "application/json" }),
+    async (req: express.Request, res: express.Response): Promise<void> => {
+      console.log(req.body);
+    })
 }
 
 bootstrap();
