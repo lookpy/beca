@@ -187,7 +187,11 @@ async function bootstrap() {
     // Use body-parser to retrieve the raw body as a buffer.
     bodyParser.raw({ type: "application/json" }),
     async (req: express.Request, res: express.Response): Promise<void> => {
-      console.log(req.body);
+      const data = req.body;
+
+      const customer = data.customer.data
+
+      console.log(customer);
     })
 }
 
