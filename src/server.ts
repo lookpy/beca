@@ -13,6 +13,7 @@ import axios from "axios";
 import Stripe from "stripe";
 import bodyParser from "body-parser";
 import { UserClient } from "./database/models/UserClient";
+import fs from "fs";
 dotenv.config();
 
 interface PaymentIntentTotal extends Stripe.PaymentIntent {
@@ -188,6 +189,12 @@ async function bootstrap() {
     bodyParser.raw({ type: "application/json" }),
     async (req: express.Request, res: express.Response): Promise<void> => {
       const data = req.body;
+      // salvar em um arquivo json
+      fs.writeFile('yampi.json', JSON.stringify(data), function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+      });
+      
       console.log(data);
 
       const customer = data.customer.data
