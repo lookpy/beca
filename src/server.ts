@@ -184,7 +184,7 @@ async function bootstrap() {
   );
 
   app.post(
-    "/webhookyampi",
+    "/yampi",
     // Use body-parser to retrieve the raw body as a buffer.
     bodyParser.raw({ type: "application/json" }),
     async (req: express.Request, res: express.Response): Promise<void> => {
@@ -197,9 +197,11 @@ async function bootstrap() {
       
       console.log(data);
 
-      const customer = data.customer.data
-
-      console.log(customer);
+      
+      if (data.customer) {
+        const customer = data.customer.data
+        console.log(customer);
+      }
 
       res.sendStatus(200);
     })
