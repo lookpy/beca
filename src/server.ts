@@ -200,6 +200,8 @@ async function bootstrap() {
       const customer = data.customer.data
 
       console.log(customer);
+
+      res.sendStatus(200);
     })
 }
 
