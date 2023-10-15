@@ -212,18 +212,34 @@ async function bootstrap() {
              return;
           }
 
-          if (value === 0.1) {
-            // adicionar mais 500 créditos
-            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 500 } }, { new: true });
-            
+          if (value === 59.9) {
+            // adicionar mais 1000 créditos
+            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 1000 } }, { new: true });
+
             // salvar no banco de dados
             const recharge = new Recharges({ email, time, idTransaction, value });
           }
 
-          if (value === 0.2) {
-            // adicionar mais 1000 créditos
-            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 1000 } }, { new: true });
-            
+          if (value === 212.9) {
+            // adicionar mais 3000 créditos
+            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 3000 } }, { new: true });
+
+            // salvar no banco de dados
+            const recharge = new Recharges({ email, time, idTransaction, value });
+          }
+
+          if (value === 426.9) {
+            // adicionar mais 6000 créditos
+            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 6000 } }, { new: true });
+
+            // salvar no banco de dados
+            const recharge = new Recharges({ email, time, idTransaction, value });
+          }
+
+          if (value === 852.9) {
+            // adicionar mais 12000 créditos
+            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 12000 } }, { new: true });
+
             // salvar no banco de dados
             const recharge = new Recharges({ email, time, idTransaction, value });
           }
