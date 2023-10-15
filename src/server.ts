@@ -197,10 +197,10 @@ async function bootstrap() {
       
       console.log(data);
 
-      
-      if (data.customer) {
-        const customer = data.customer.data
-        console.log(customer);
+      if (data.event === "order.paid") {
+          const email = data.resource.customer.data[0].email
+          const value = data.resource.value_total
+          console.log(email, value);
       }
 
       res.sendStatus(200);
