@@ -219,6 +219,14 @@ async function bootstrap() {
             // salvar no banco de dados
             const recharge = new Recharges({ email, time, idTransaction, value });
           }
+
+          if (value === 0.2) {
+            // adicionar mais 1000 créditos
+            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 1000 } }, { new: true });
+            
+            // salvar no banco de dados
+            const recharge = new Recharges({ email, time, idTransaction, value });
+          }
       }
 
       res.sendStatus(200);
