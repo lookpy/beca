@@ -200,7 +200,12 @@ async function bootstrap() {
       if (data.event === "order.paid") {
           const email = data.resource.customer.data.email
           const value = data.resource.value_total
-          console.log(email, value);
+
+          if (value === 0.1) {
+            // adicionar mais 500 créditos
+            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 500 } }, { new: true });
+            console.log(updateCredits);
+          }
       }
 
       res.sendStatus(200);
