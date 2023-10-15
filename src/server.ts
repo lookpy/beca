@@ -14,6 +14,7 @@ import Stripe from "stripe";
 import bodyParser from "body-parser";
 import { UserClient } from "./database/models/UserClient";
 import fs from "fs";
+import { Recharges } from "./database/models/Recharges";
 dotenv.config();
 
 interface PaymentIntentTotal extends Stripe.PaymentIntent {
@@ -200,11 +201,23 @@ async function bootstrap() {
       if (data.event === "order.paid") {
           const email = data.resource.customer.data.email
           const value = data.resource.value_total
+          const idTransaction = data.resource.id
+          const time = data.time
+
+          // verificar se o idTransaction já existe no banco de dados
+          const findTransaction = await Recharges.findOne({ idTransaction });
+
+          if (findTransaction) {
+             res.sendStatus(200);
+             return;
+          }
 
           if (value === 0.1) {
             // adicionar mais 500 créditos
             const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 500 } }, { new: true });
-            console.log(updateCredits);
+            
+            // salvar no banco de dados
+            const recharge = new Recharges({ email, time, idTransaction, value });
           }
       }
 
