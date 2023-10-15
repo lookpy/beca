@@ -198,7 +198,7 @@ async function bootstrap() {
       console.log(data);
 
       if (data.event === "order.paid") {
-          const email = data.resource.customer
+          const email = data.resource.customer.data.email
           const value = data.resource.value_total
           console.log(email, value);
       }
