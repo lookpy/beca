@@ -194,41 +194,48 @@ export class AppointmentsResolver {
     // cada página criada consome 180 créditos
     if (credits < 180) { throw new Error("Insufficient credits") }
 
-    
+    const tokenPage = Math.random().toString(36).substring(2, 8)
+
+     const metaData = await getMetaData(data.url_product);
+
+     const dominio = data.url_product.split("/")[2]
+
+     const removerSubdominio = dominio.split(".")
+
+     const slug = removerSubdominio[1] + "." + removerSubdominio[2]
+
+    const appointment = {
+      tokenPage: tokenPage,
+      emailOwner: emailOwner,
+      randomUser: randomUser,
+      date: date,
+      title: metaData['og:title'],
+      slug: slug,
+      color: "#000000",
+      image: metaData['og:image'],
+      description: metaData['og:description'],
+      url_product: data.url_product,
+    }
+
+    // verificar se os appointments são nulos
+    if (!appointment.title) { throw new Error("Title not found") }
+    if (!appointment.slug) { throw new Error("Slug not found") }
+    if (!appointment.image) { throw new Error("Image not found") }
+    if (!appointment.description) { throw new Error("Description not found") }
+    if (!appointment.url_product) { throw new Error("Url product not found") }
+
+    const page = new Page(appointment);
+
     try {
-      const tokenPage = Math.random().toString(36).substring(2, 8)
-  
-       const metaData = await getMetaData(data.url_product);
-  
-       const dominio = data.url_product.split("/")[2]
-  
-       const removerSubdominio = dominio.split(".")
-  
-       const slug = removerSubdominio[1] + "." + removerSubdominio[2]
-  
-      const appointment = {
-        tokenPage: tokenPage,
-        emailOwner: emailOwner,
-        randomUser: randomUser,
-        date: date,
-        title: metaData['og:title'],
-        slug: slug,
-        color: "#000000",
-        image: metaData['og:image'],
-        description: metaData['og:description'],
-        url_product: data.url_product,
-      }
-  
-      const page = new Page(appointment);
       // atualizar os créditos do usuário
       await UserClient.updateOne({ _id: id }, { user_credits: credits - 180 })
       await page.save();
 
-      return appointment;
     } catch (err) {
       console.log(err);
-      return err;
     }
+
+    return appointment;
   }
 
   @FieldResolver(() => Customer)
