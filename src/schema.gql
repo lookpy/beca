@@ -4,15 +4,15 @@
 # -----------------------------------------------
 
 type AppointmentModel {
-  color: String!
+  color: String
   customer: Customer!
   date: DateTime
-  description: String!
+  description: String
   emailOwner: String
-  image: String!
+  image: String
   randomUser: String
-  slug: String!
-  title: String!
+  slug: String
+  title: String
   tokenPage: String
   url_product: String
 }

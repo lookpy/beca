@@ -14,19 +14,19 @@ export class AppointmentModel {
   @Field({nullable: true})
   date: Date;
   
-  @Field()
+  @Field({ nullable: true })
   title: string;
 
-  @Field()
+  @Field({ nullable: true })
   slug: string;
 
-  @Field()
+  @Field({ nullable: true })
   color: string;
 
-  @Field()
+  @Field({ nullable: true })
   image: string;
 
-  @Field()
+  @Field({ nullable: true })
   description: string;
 
   @Field({ nullable: true })
