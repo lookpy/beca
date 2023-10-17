@@ -200,6 +200,8 @@ async function bootstrap() {
 
       const data = req.body;
 
+      console.log(data);
+
       if (data.event === "order.paid") {
         const email = data.resource.customer.data.email
         const value = data.resource.value_total
