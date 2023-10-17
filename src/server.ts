@@ -212,6 +212,7 @@ async function bootstrap() {
         const findTransaction = await Recharges.findOne({ idTransaction });
 
         if (findTransaction) {
+          console.log('Transação já existe no banco de dados');
           res.sendStatus(200);
           return;
         }
