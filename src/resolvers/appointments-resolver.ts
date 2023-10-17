@@ -218,10 +218,8 @@ export class AppointmentsResolver {
     }
 
     // verificar se os appointments são nulos
-    if (!appointment.title) { throw new Error("Title not found") }
     if (!appointment.slug) { throw new Error("Slug not found") }
     if (!appointment.image) { throw new Error("Image not found") }
-    if (!appointment.description) { throw new Error("Description not found") }
     if (!appointment.url_product) { throw new Error("Url product not found") }
 
     const page = new Page(appointment);
