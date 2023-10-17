@@ -190,13 +190,6 @@ async function bootstrap() {
     bodyParser.raw({ type: "application/json" }),
     async (req: express.Request, res: express.Response): Promise<void> => {
       const data = req.body;
-      // salvar em um arquivo json
-      fs.writeFile('yampi.json', JSON.stringify(data), function (err) {
-        if (err) throw err;
-        console.log('Saved!');
-      });
-      
-      console.log(data);
 
       if (data.event === "order.paid") {
           const email = data.resource.customer.data.email
