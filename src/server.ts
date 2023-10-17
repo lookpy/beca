@@ -13,7 +13,7 @@ import axios from "axios";
 import Stripe from "stripe";
 import bodyParser from "body-parser";
 import { UserClient } from "./database/models/UserClient";
-import fs from "fs";
+import crypto from "crypto";
 import { Recharges } from "./database/models/Recharges";
 dotenv.config();
 
@@ -189,53 +189,62 @@ async function bootstrap() {
     // Use body-parser to retrieve the raw body as a buffer.
     bodyParser.raw({ type: "application/json" }),
     async (req: express.Request, res: express.Response): Promise<void> => {
+      const signature = req.get('X-Yampi-Hmac-SHA256');
+      const hmac = crypto.createHmac('sha256', process.env.YAMPI_WEBHOOK_SECRET!);
+      hmac.update(req.body);
+      const calculatedSignature = hmac.digest('base64');
+
+      if (signature === calculatedSignature) {
+        console.log('Yampi webhook signature verified');
+      }
+
       const data = req.body;
 
       if (data.event === "order.paid") {
-          const email = data.resource.customer.data.email
-          const value = data.resource.value_total
-          const idTransaction = data.resource.id
-          const time = data.time
+        const email = data.resource.customer.data.email
+        const value = data.resource.value_total
+        const idTransaction = data.resource.id
+        const time = data.time
 
-          // verificar se o idTransaction já existe no banco de dados
-          const findTransaction = await Recharges.findOne({ idTransaction });
+        // verificar se o idTransaction já existe no banco de dados
+        const findTransaction = await Recharges.findOne({ idTransaction });
 
-          if (findTransaction) {
-             res.sendStatus(200);
-             return;
-          }
+        if (findTransaction) {
+          res.sendStatus(200);
+          return;
+        }
 
-          if (value === 59.99) {
-            // adicionar mais 1000 créditos
-            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 1000 } }, { new: true });
+        if (value === 59.99) {
+          // adicionar mais 1000 créditos
+          const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 1000 } }, { new: true });
 
-            // salvar no banco de dados
-            const recharge = new Recharges({ email, time, idTransaction, value });
-          }
+          // salvar no banco de dados
+          const recharge = new Recharges({ email, time, idTransaction, value });
+        }
 
-          if (value === 212.99) {
-            // adicionar mais 3000 créditos
-            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 3000 } }, { new: true });
+        if (value === 212.99) {
+          // adicionar mais 3000 créditos
+          const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 3000 } }, { new: true });
 
-            // salvar no banco de dados
-            const recharge = new Recharges({ email, time, idTransaction, value });
-          }
+          // salvar no banco de dados
+          const recharge = new Recharges({ email, time, idTransaction, value });
+        }
 
-          if (value === 426.99) {
-            // adicionar mais 6000 créditos
-            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 6000 } }, { new: true });
+        if (value === 426.99) {
+          // adicionar mais 6000 créditos
+          const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 6000 } }, { new: true });
 
-            // salvar no banco de dados
-            const recharge = new Recharges({ email, time, idTransaction, value });
-          }
+          // salvar no banco de dados
+          const recharge = new Recharges({ email, time, idTransaction, value });
+        }
 
-          if (value === 852.99) {
-            // adicionar mais 12000 créditos
-            const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 12000 } }, { new: true });
+        if (value === 852.99) {
+          // adicionar mais 12000 créditos
+          const updateCredits = await UserClient.findOneAndUpdate({ email }, { $inc: { user_credits: 12000 } }, { new: true });
 
-            // salvar no banco de dados
-            const recharge = new Recharges({ email, time, idTransaction, value });
-          }
+          // salvar no banco de dados
+          const recharge = new Recharges({ email, time, idTransaction, value });
+        }
       }
 
       res.sendStatus(200);
