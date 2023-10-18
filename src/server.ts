@@ -252,6 +252,28 @@ async function bootstrap() {
 
       res.sendStatus(200);
     })
+
+  app.post("/previewpage", express.json(), async (req, res) => {
+    const data = req.body
+
+    const url = data.url;
+
+    try {
+      const userAgent = req.headers['user-agent'];
+      const response = await axios.get(url, {
+        headers: {
+          // headers de um smartphone
+          'User-Agent': userAgent,
+        }
+      });
+
+      const data = response.data;
+      res.send(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Erro ao buscar dados do servidor');
+    }
+  })
 }
 
 bootstrap();
