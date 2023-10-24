@@ -274,6 +274,26 @@ async function bootstrap() {
       res.status(500).send('Erro ao buscar dados do servidor');
     }
   })
+
+  app.post('/load-local-images', async (req, res) => {
+    try {
+      const fetchImagePromises = req.body.images.map(async (image: string) => {
+        const response = await axios.get(image, {
+          responseType: 'arraybuffer',
+        });
+        const imageBuffer = Buffer.from(response.data, 'binary');
+        const base64Image = imageBuffer.toString('base64');
+
+        return `data:${response.headers['content-type']};base64,${base64Image}`;
+      });
+
+      const images = await Promise.all(fetchImagePromises);
+      res.json({ images });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: 'Error fetching images' });
+    }
+  });
 }
 
 bootstrap();
