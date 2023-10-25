@@ -3,8 +3,8 @@ import { DataUserModel } from "../dtos/models/data-user-models";
 import { CreateDataUserInput } from "../dtos/inputs/create-data-user-input";
 import { DataUser } from "../database/models/DataUser";
 import { UpdateDataUserInput } from "../dtos/inputs/update-data-user-input";
-import jwt from 'jsonwebtoken';
 import { UserClient } from "../database/models/UserClient";
+import { sendEmail } from "../adapters/mailgun";
 
 @Resolver(() => DataUserModel)
 export class DataUserResolver {
@@ -62,8 +62,55 @@ export class DataUserResolver {
     const dataUser = new DataUser(dataUserData);
 
     try {
-      // atualizar os créditos do usuário
       await dataUser.save()
+      await sendEmail(user.email, "Dados Capturados", `
+      <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+          }
+          .message {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+          }
+          .button {
+            display: inline-block;
+            font-size: 16px;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+          }
+          .button:hover {
+            background-color: #0056b3;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="message">
+            <p>Captura de dados feita com sucesso!</p>
+            <p>Acesse a plataforma para visualizar os dados capturados.</p>
+            <a class="button" href="https://www.abrir.ink/dashboard">Clique aqui</a>
+          </div>
+          <p>Equipe Manoeldev</p>
+        </div>
+      </body>
+    </html>    
+      `)
 
     } catch (error) {
 
