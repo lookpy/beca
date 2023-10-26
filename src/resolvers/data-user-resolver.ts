@@ -104,7 +104,6 @@ export class DataUserResolver {
           <div class="message">
             <p>Captura de dados feita com sucesso!</p>
             <p>Acesse a plataforma para visualizar os dados capturados.</p>
-            <a class="button" href="https://www.abrir.ink/dashboard">Clique aqui</a>
           </div>
           <p>Equipe Manoeldev</p>
         </div>
