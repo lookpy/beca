@@ -30,6 +30,7 @@ export class DataUserResolver {
         screenshot2: item.screenshot2,
         screenshot3: item.screenshot3,
         userAgent: item.userAgent,
+        viewed: item.viewed
       }
     });
 
@@ -176,9 +177,44 @@ export class DataUserResolver {
         screenshot2: item.screenshot2,
         screenshot3: item.screenshot3,
         userAgent: item.userAgent,
+        viewed: item.viewed
       }
     });
 
     return dataUser
+  }
+
+  // mutation para atualizar o campo viewed para true
+  @Mutation(() => DataUserModel)
+  async updateViewedDataUser(@Arg("id", () => ID) id: string) {
+    const dataUsers = await DataUser.findById(id);
+
+    if (!dataUsers) { throw new Error("Page not found") }
+
+    try {
+      // atualizar o campo viewed para true
+      const updatedDataUser = await DataUser.findByIdAndUpdate(
+        id,
+        {
+          $set: {
+            viewed: true
+          }
+        },
+        { new: true }
+      );
+
+
+      if (!updatedDataUser) {
+        throw new Error("Documento não encontrado");
+      }
+
+      return {
+        id: updatedDataUser._id,
+        ...updatedDataUser.toObject(),
+      };
+    } catch (error) {
+      console.error("Erro ao atualizar documento:", error);
+      throw error;
+    }
   }
 }

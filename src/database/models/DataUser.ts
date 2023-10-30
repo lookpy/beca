@@ -39,7 +39,7 @@ const kittySchema = new Schema<DataUserAttributes>({
   screenshot2: String,
   screenshot3: String,
   userAgent: String,
-   viewed: Boolean,
+  viewed: { type: Boolean, default: false}
 })
 
 export const DataUser = model('DataUser', kittySchema);

@@ -56,4 +56,7 @@ export class DataUserModel {
 
   @Field({nullable: true})
   userAgent: string;
+
+  @Field({nullable: true})
+  viewed: boolean;
 }
