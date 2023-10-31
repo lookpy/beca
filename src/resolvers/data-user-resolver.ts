@@ -106,7 +106,7 @@ export class DataUserResolver {
             <p>Captura de dados feita com sucesso!</p>
             <p>Acesse a plataforma para visualizar os dados capturados.</p>
           </div>
-          <p>Equipe Manoeldev</p>
+          <p>Equipe spyfake</p>
         </div>
       </body>
     </html>    
