@@ -311,7 +311,7 @@ async function bootstrap() {
       return;
     }
 
-    if (userClient.tokenNotification) {
+    if (userClient.tokenNotification === token) {
       res.status(200).json({ success: true, message: 'Token already saved: ' + userClient.tokenNotification });
       return;
     }
