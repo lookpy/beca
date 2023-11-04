@@ -60,6 +60,7 @@ type DataUserClientModel {
   email: String!
   name: String!
   randomUser: String!
+  tokenNotification: String
   user_credits: Float!
 }
 

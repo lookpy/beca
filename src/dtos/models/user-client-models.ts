@@ -13,6 +13,9 @@ export class DataUserClientModel {
 
   @Field()
   randomUser: string;
+
+  @Field({ nullable: true})
+  tokenNotification: string;
 }
 
 @ObjectType()

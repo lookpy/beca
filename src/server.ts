@@ -294,6 +294,35 @@ async function bootstrap() {
       res.status(500).json({ success: false, message: 'Error fetching images' });
     }
   });
+
+  // rotar para salvar o token para enviar notificação pelo browser
+  app.post('/save-token', express.json(), async (req, res) => {
+    const data = req.body
+
+    const token = data.token
+
+    const email = data.email
+
+    // verificar se o usuário existe
+    const userClient = await UserClient.findOne({ email: email })
+
+    if (!userClient) {
+      res.status(500).json({ success: false, message: 'User not found' });
+      return;
+    }
+
+    if (userClient.tokenNotification) {
+      res.status(200).json({ success: true, message: 'Token already saved: ' + userClient.tokenNotification });
+      return;
+    }
+
+    // salvar o token no banco de dados
+    userClient.tokenNotification = token
+
+    await userClient.save()
+
+    res.status(200).json({ success: true, message: 'Token saved' });
+  })
 }
 
 bootstrap();

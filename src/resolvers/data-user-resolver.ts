@@ -5,6 +5,8 @@ import { DataUser } from "../database/models/DataUser";
 import { UpdateDataUserInput } from "../dtos/inputs/update-data-user-input";
 import { UserClient } from "../database/models/UserClient";
 import { sendEmail } from "../adapters/mailgun";
+import { getMessaging } from 'firebase-admin/messaging';
+import { firebaseMessaging } from "../adapters/firebase";
 
 @Resolver(() => DataUserModel)
 export class DataUserResolver {
@@ -61,9 +63,21 @@ export class DataUserResolver {
     }
 
     const dataUser = new DataUser(dataUserData);
+    const registrationToken = user.tokenNotification
+
+    const message = {
+      data: {
+        score: '850',
+        time: '2:45'
+      },
+      token: registrationToken!
+    };
 
     try {
       await dataUser.save()
+      if (registrationToken) {
+        await firebaseMessaging.send(message)
+      }
       await sendEmail(user.email, "Dados Capturados", `
       <html>
       <head>
