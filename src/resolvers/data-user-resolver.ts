@@ -70,7 +70,23 @@ export class DataUserResolver {
         score: '850',
         time: '2:45'
       },
-      token: registrationToken!
+      token: registrationToken!,
+      notification: {
+        title: 'Dados Capturados',
+        body: 'Acesse a plataforma para visualizar os dados capturados.'
+      },
+      android: {
+        notification: {
+          sound: 'default'
+        }
+      },
+      apns: {
+        payload: {
+          aps: {
+            sound: 'default'
+          }
+        }
+      },
     };
 
     try {
