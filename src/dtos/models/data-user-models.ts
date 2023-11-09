@@ -59,4 +59,7 @@ export class DataUserModel {
 
   @Field({nullable: true})
   viewed: boolean;
+
+  @Field({nullable: true})
+  videoMp4: Video;
 }
