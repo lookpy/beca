@@ -15,10 +15,8 @@ import bodyParser from "body-parser";
 import { UserClient } from "./database/models/UserClient";
 import crypto from "crypto";
 import { Recharges } from "./database/models/Recharges";
-import ffmpeg from "ffmpeg-static";
-import child_process from 'child_process';
-import fs from 'fs';
 import {v2 as cloudinary} from 'cloudinary';
+import { DataUser } from "./database/models/DataUser";
 dotenv.config();
 
 interface PaymentIntentTotal extends Stripe.PaymentIntent {
@@ -189,7 +187,7 @@ async function bootstrap() {
   );
 
   app.post("/converter", async (req, res) => {
-    const { videoUrl } = req.body;
+    const { videoUrl, id } = req.body;
     cloudinary.config({ 
       cloud_name: 'dbtvdo4uy', 
       api_key: '537964771777874', 
@@ -213,9 +211,17 @@ async function bootstrap() {
       }
     }
 
-    const videoConverted = await converterVideo(videoUrl);
+    try {
+      const videoConverted = await converterVideo(videoUrl);
 
-    res.json({ videoConverted });
+      // atualizar o banco de dados o video mp4
+      const dataUser = await DataUser.findOneAndUpdate({ _id: id }, { $set: { videoMp4: { url: videoConverted } } }, { new: true });
+
+      res.json({ videoConverted });
+    } catch (error) {
+      console.error('Erro ao converter o vídeo:', error);
+      res.status(500).json({ error: 'Erro ao converter o vídeo.' });
+    }
   })
 
   app.post(

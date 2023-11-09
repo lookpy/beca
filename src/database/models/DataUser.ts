@@ -14,6 +14,9 @@ interface DataUserAttributes {
   video: {
     url: string;
   };
+  videoMp4: {
+    url: string;
+  };
   screenshot: string;
   screenshot2: string;
   screenshot3: string;
@@ -39,7 +42,10 @@ const kittySchema = new Schema<DataUserAttributes>({
   screenshot2: String,
   screenshot3: String,
   userAgent: String,
-  viewed: { type: Boolean, default: false}
+  viewed: { type: Boolean, default: false },
+  videoMp4: {
+    url: { type: String, default: null },
+  },
 })
 
 export const DataUser = model('DataUser', kittySchema);
