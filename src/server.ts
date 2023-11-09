@@ -18,6 +18,7 @@ import { Recharges } from "./database/models/Recharges";
 import ffmpeg from "ffmpeg-static";
 import child_process from 'child_process';
 import fs from 'fs';
+import {v2 as cloudinary} from 'cloudinary';
 dotenv.config();
 
 interface PaymentIntentTotal extends Stripe.PaymentIntent {
@@ -189,39 +190,32 @@ async function bootstrap() {
 
   app.post("/converter", async (req, res) => {
     const { videoUrl } = req.body;
+    cloudinary.config({ 
+      cloud_name: 'dbtvdo4uy', 
+      api_key: '537964771777874', 
+      api_secret: 'NF0_3tWXRr6twalYNM-tJRroxlo' 
+    });
 
     if (!videoUrl) {
       return res.status(400).json({ error: 'É necessário fornecer uma URL de vídeo.' });
     }
 
-    const outputPath = './output.mp4';
-    const response = await axios.get(videoUrl, { responseType: 'stream' });
-    const writer = fs.createWriteStream('./input.webm');
-    response.data.pipe(writer);
+    async function converterVideo(videoUrl: string) {
+      try {
+        const result = await cloudinary.uploader.upload(videoUrl, {
+          resource_type: 'video',
+          format: 'mp4'
+        });
+        return result.secure_url;
+      } catch (error) {
+        console.error('Erro ao converter o vídeo:', error);
+        throw error;
+      }
+    }
 
-    writer.on('finish', () => {
-      const ffmpegProcess = child_process.spawn('ffmpeg', ['-i', './input.webm', outputPath]);
-  
-      ffmpegProcess.on('exit', (code) => {
-        if (code === 0) {
-          res.download(outputPath, (err) => {
-            if (err) {
-              res.status(500).json({ error: 'Erro ao baixar o vídeo convertido.' });
-            } else {
-              // Remova o arquivo de saída após o download
-              fs.unlinkSync(outputPath);
-              fs.unlinkSync('./input.webm');
-            }
-          });
-        } else {
-          res.status(500).json({ error: 'Erro ao converter o vídeo.' });
-        }
-      });
-    });
-  
-    writer.on('error', () => {
-      res.status(500).json({ error: 'Erro ao baixar o vídeo.' });
-    });
+    const videoConverted = await converterVideo(videoUrl);
+
+    res.json({ videoConverted });
   })
 
   app.post(
