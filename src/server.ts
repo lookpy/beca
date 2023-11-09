@@ -217,8 +217,6 @@ async function bootstrap() {
       // atualizar o banco de dados o video mp4
       const dataUser = await DataUser.findOneAndUpdate({ _id: id }, { $set: { videoMp4: { url: videoConverted } } }, { new: true });
 
-      console.log(dataUser)
-
       res.json({ videoConverted });
     } catch (error) {
       console.error('Erro ao converter o vídeo:', error);
