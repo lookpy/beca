@@ -78,6 +78,7 @@ type DataUserModel {
   tokenPage: String!
   userAgent: String
   video: Video
+  videoMp4: Video
   viewed: Boolean
 }
 

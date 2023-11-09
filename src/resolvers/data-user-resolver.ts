@@ -32,7 +32,8 @@ export class DataUserResolver {
         screenshot2: item.screenshot2,
         screenshot3: item.screenshot3,
         userAgent: item.userAgent,
-        viewed: item.viewed
+        viewed: item.viewed,
+        videoMp4: item.videoMp4,
       }
     });
 
