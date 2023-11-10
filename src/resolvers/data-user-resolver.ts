@@ -69,7 +69,8 @@ export class DataUserResolver {
     const message = {
       data: {
         score: '850',
-        time: '2:45'
+        time: '2:45',
+        link: 'https://abrir.ink/dashboard'
       },
       token: registrationToken!,
       notification: {

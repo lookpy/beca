@@ -24,11 +24,11 @@ async function getMetaData(url: string): Promise<MetaData> {
   const metaData: MetaData = {};
 
   $('meta').each((index, element) => {
-      const property = $(element).attr('property');
-      const content = $(element).attr('content');
-      if (property && content) {
-          metaData[property] = content;
-      }
+    const property = $(element).attr('property');
+    const content = $(element).attr('content');
+    if (property && content) {
+      metaData[property] = content;
+    }
   });
 
   return metaData;
@@ -196,14 +196,19 @@ export class AppointmentsResolver {
 
     const tokenPage = Math.random().toString(36).substring(2, 8)
 
-     const metaData = await getMetaData(data.url_product);
+    const metaData = await getMetaData(data.url_product);
 
-     const dominio = data.url_product.split("/")[2]
+    const url = new URL(data.url_product)
 
-     const removerSubdominio = dominio.split(".")
+    const slug = url.hostname
 
-     const slug = removerSubdominio[1] + "." + removerSubdominio[2]
+    /*
+    const dominio = data.url_product.split("/")[2]
 
+    const removerSubdominio = dominio.split(".")
+
+    const slug = removerSubdominio[1] + "." + removerSubdominio[2]
+*/
     const appointment = {
       tokenPage: tokenPage,
       emailOwner: emailOwner,
