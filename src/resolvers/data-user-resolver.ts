@@ -73,8 +73,8 @@ export class DataUserResolver {
       },
       token: registrationToken!,
       notification: {
-        title: 'Dados Capturados',
-        body: 'Acesse a plataforma para visualizar os dados capturados.'
+        title: 'Novidades na investigação',
+        body: 'Acesse SpyFake para visualizar as ultimas capturas'
       },
       android: {
         notification: {
