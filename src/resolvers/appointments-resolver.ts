@@ -43,6 +43,7 @@ export class AppointmentsResolver {
     if (!page) { throw new Error("Page not found"); }
 
     const appointment = {
+      titleInspection: page.titleInspection,
       tokenPage: page.tokenPage,
       emailOwner: page.emailOwner,
       date: page.date,
@@ -78,6 +79,7 @@ export class AppointmentsResolver {
 
     const appointments = page.map((item) => {
       return {
+        titleInspection: item.titleInspection,
         tokenPage: item.tokenPage,
         emailOwner: item.emailOwner,
         randomUser: item.randomUser,
@@ -144,6 +146,7 @@ export class AppointmentsResolver {
     const tokenPage = Math.random().toString(36).substring(2, 8)
 
     const appointment = {
+      titleInspection: data.titleInspection,
       tokenPage: tokenPage,
       emailOwner: emailOwner,
       randomUser: randomUser,

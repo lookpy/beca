@@ -13,6 +13,7 @@ type AppointmentModel {
   randomUser: String
   slug: String
   title: String
+  titleInspection: String
   tokenPage: String
   url_product: String
 }
@@ -23,6 +24,7 @@ input CreateAppointmentInput {
   image: String!
   slug: String!
   title: String!
+  titleInspection: String!
   tokenOwner: String!
   url_product: String
 }
@@ -42,6 +44,7 @@ input CreateDataUserInput {
 }
 
 input CreateProductInput {
+  titleInspection: String!
   tokenOwner: String!
   url_product: String!
 }

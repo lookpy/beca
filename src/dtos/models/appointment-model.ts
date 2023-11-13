@@ -3,6 +3,9 @@ import { Field, ObjectType } from "type-graphql";
 @ObjectType()
 export class AppointmentModel {
   @Field({ nullable: true })
+  titleInspection: string;
+  
+  @Field({ nullable: true })
   emailOwner: string;
 
   @Field({ nullable: true })
