@@ -178,6 +178,7 @@ export class AppointmentsResolver {
     const token = data.tokenOwner
     const decode = jwt.verify(token, process.env.SECRET!) as any
     const id = decode.id
+    const titleInspection = data.titleInspection
 
     const user = await UserClient.findOne({ _id: id })
 
@@ -213,6 +214,7 @@ export class AppointmentsResolver {
     const slug = removerSubdominio[1] + "." + removerSubdominio[2]
 */
     const appointment = {
+      titleInspection: titleInspection,
       tokenPage: tokenPage,
       emailOwner: emailOwner,
       randomUser: randomUser,
