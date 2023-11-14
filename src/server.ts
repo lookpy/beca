@@ -300,7 +300,6 @@ async function bootstrap() {
 
     try {
       const userAgent = req.headers['user-agent'];
-      console.log(userAgent);
       const response = await axios.get(url, {
         headers: {
           // headers de um smartphone
