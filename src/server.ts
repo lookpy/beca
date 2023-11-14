@@ -299,9 +299,13 @@ async function bootstrap() {
     const url = data.url;
 
     try {
-      const headers = req.headers
+      const userAgent = req.headers['user-agent'];
+      console.log(userAgent);
       const response = await axios.get(url, {
-        headers: headers
+        headers: {
+          // headers de um smartphone
+          'User-Agent': userAgent,
+        }
       });
 
       const data = response.data;
