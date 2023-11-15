@@ -108,7 +108,9 @@ input LoginUserClientInput {
 type Mutation {
   CreateUserClient(data: CreateUserClientInput!): Token!
   LoginUserClient(data: LoginUserClientInput!): Token!
+  ResetPassword(newPassword: String!, token: String!): Boolean!
   UpdateUserCredits(credits: Float!, email: String!): DataUserClientModel!
+  UpdateUserPassword(data: UpdateUserPasswordInput!): Boolean!
   VerifyToken(token: String!): Boolean!
   createAppointment(data: CreateAppointmentInput!): AppointmentModel!
   createDataUser(data: CreateDataUserInput!): DataUserModel!
@@ -141,6 +143,10 @@ input UpdateDataUserInput {
   slug: String
   userAgent: String
   video: VideoInput
+}
+
+input UpdateUserPasswordInput {
+  email: String!
 }
 
 type Video {

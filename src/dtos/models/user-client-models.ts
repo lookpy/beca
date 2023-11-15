@@ -23,3 +23,9 @@ export class Token {
   @Field()
   token: string;
 }
+
+@ObjectType()
+export class UpdateUserPasswordModel {
+  @Field()
+  email: string;
+}

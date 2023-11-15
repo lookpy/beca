@@ -8,15 +8,19 @@ interface UserClientAttributes {
   randomUser: string;
   // campo para token para enviar notificações
   tokenNotification?: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpires?: Date | number | null;
 }
 
 const kittySchema = new Schema<UserClientAttributes>({
   name: String,
   email: { type: String, unique: true },
   password: String,
-  user_credits: { type: Number, default: 5000 },
+  user_credits: { type: Number, default: 0 },
   randomUser: String,
-  tokenNotification: String
+  tokenNotification: String,
+  resetPasswordToken: { type: String, default: null },
+  resetPasswordExpires: { type: Date, default: null }
 })
 
 export const UserClient = model('UserClient', kittySchema);

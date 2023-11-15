@@ -4,6 +4,10 @@ import { UserClient } from "../database/models/UserClient";
 import jwt from 'jsonwebtoken';
 import { DataUserClientModel, Token } from "../dtos/models/user-client-models";
 import { CreateUserClientInput, LoginUserClientInput } from "../dtos/inputs/create-user-client-input";
+import { UpdateUserPasswordInput } from "../dtos/inputs/update-user-password";
+import { UpdateUserPasswordModel } from "../dtos/models/user-client-models";
+import { sendEmail } from "../adapters/mailgun";
+import crypto from 'crypto';
 
 @Resolver()
 export class UserClientResolver {
@@ -15,7 +19,7 @@ export class UserClientResolver {
     }
 
     // criar um usuário não identificável para colocar no slug com 6 caracteres não usar caracteres que mexam com a url
-    const randomUser =  Math.random().toString(36).substring(2, 8)
+    const randomUser = Math.random().toString(36).substring(2, 8)
 
     const userClient = await UserClient.create({
       name: data.name,
@@ -130,5 +134,67 @@ export class UserClientResolver {
     } as DataUserClientModel
 
     return dataUserClient
+  }
+
+  // enviar para o usuário um link no email para ele atualizar a senha
+  @Mutation(() => Boolean)
+  async UpdateUserPassword(@Arg('data') data: UpdateUserPasswordInput) {
+    const email = data.email
+
+    // Gerar um token exclusivo para redefinição de senha
+    const resetToken = crypto.randomBytes(20).toString('hex');
+
+
+    // Salvar o token no banco de dados ou em algum lugar seguro associado ao usuário
+    const user = await UserClient.findOne({ email: email });
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = Date.now() + 3600000; // Token válido por 1 hora (em milissegundos)
+    await user.save();
+
+    // Agora você pode incluir o token no link de redefinição de senha
+    const resetLink = `https://www.abrir.ink/reset-password/${resetToken}`;
+
+    // Enviar o link por e-mail
+    const emailSubject = 'Redefinição de Senha';
+    const emailBody = `Clique no seguinte link para redefinir sua senha: ${resetLink}`;
+
+    try {
+      await sendEmail(email, emailSubject, emailBody);
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+
+  @Mutation(() => Boolean)
+  async ResetPassword(
+    @Arg('token') token: string,
+    @Arg('newPassword') newPassword: string
+  ) {
+    const user = await UserClient.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() } // Verificar se o token ainda é válido
+    });
+
+    if (!user) {
+      throw new Error('Token inválido ou expirado. Solicite novamente a redefinição de senha.');
+    }
+
+    // Atualizar a senha do usuário
+    user.password = bcrypt.hashSync(newPassword, 10);
+    
+    // Limpar as informações de redefinição de senha após a alteração bem-sucedida
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+
+    // Salvar as alterações no banco de dados
+    await user.save();
+
+    return true;
   }
 }
