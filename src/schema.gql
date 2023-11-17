@@ -122,6 +122,7 @@ type Mutation {
 
 type Query {
   DataUserClient(token: String!): DataUserClientModel!
+  ListAllUserClient: [DataUserClientModel!]!
   appointments(tokenPage: String!): AppointmentModel!
   appointmentsAll: [AppointmentModel!]!
   appointmentsByUser(tokenOwner: String!): [AppointmentModel!]!

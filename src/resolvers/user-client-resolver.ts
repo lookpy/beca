@@ -218,4 +218,22 @@ export class UserClientResolver {
       throw new Error('Error to login user')
     }
   }
+
+  // listar todos os usuários
+  @Query(() => [DataUserClientModel])
+  async ListAllUserClient() {
+    const clients = await UserClient.find()
+
+    const dataUserClient = clients.map((client) => {
+      return {
+        name: client.name,
+        email: client.email,
+        user_credits: client.user_credits,
+        randomUser: client.randomUser,
+        tokenNotification: client.tokenNotification
+      } as DataUserClientModel
+    })
+
+    return dataUserClient
+  }
 }
