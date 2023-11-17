@@ -107,6 +107,7 @@ input LoginUserClientInput {
 
 type Mutation {
   CreateUserClient(data: CreateUserClientInput!): Token!
+  LoginAdmin(password: String!): Token!
   LoginUserClient(data: LoginUserClientInput!): Token!
   ResetPassword(newPassword: String!, token: String!): Boolean!
   UpdateUserCredits(credits: Float!, email: String!): DataUserClientModel!

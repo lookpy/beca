@@ -197,4 +197,25 @@ export class UserClientResolver {
 
     return true;
   }
+
+  // login admin
+  @Mutation(() => Token)
+  async LoginAdmin(@Arg('password') password: string) {
+    if (password !== process.env.PASSWORD_ADMIN) {
+      throw new Error('Password incorrect')
+    }
+
+    try {
+      const token = jwt.sign({ id: 'admin' }, process.env.SECRET!, {
+        // expira em 30 dias
+        expiresIn: 86400 * 30
+      })
+
+      return { token }
+    }
+    catch (err) {
+      console.log(err)
+      throw new Error('Error to login user')
+    }
+  }
 }
