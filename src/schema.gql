@@ -125,6 +125,7 @@ type Query {
   ListAllUserClient: [DataUserClientModel!]!
   appointments(tokenPage: String!): AppointmentModel!
   appointmentsAll: [AppointmentModel!]!
+  appointmentsByEmail(emailOwner: String!): [AppointmentModel!]!
   appointmentsByUser(tokenOwner: String!): [AppointmentModel!]!
   dataUser(randomUser: String!, tokenPage: String!): [DataUserModel!]!
   dataUsersByEmail(email: String!): [DataUserModel!]!

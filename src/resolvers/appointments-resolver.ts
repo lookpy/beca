@@ -95,6 +95,33 @@ export class AppointmentsResolver {
     return appointments
   }
 
+  // query para retornar as páginas criadas pelo usuário com o email
+  @Query(() => [AppointmentModel])
+  async appointmentsByEmail(@Arg('emailOwner') emailOwner: string) {
+    const email = emailOwner
+
+    const page = await Page.find({ emailOwner: email });
+
+    if (!page) { throw new Error("Page not found") }
+
+    const appointments = page.map((item) => {
+      return {
+        titleInspection: item.titleInspection,
+        tokenPage: item.tokenPage,
+        emailOwner: item.emailOwner,
+        randomUser: item.randomUser,
+        date: item.date,
+        title: item.title,
+        slug: item.slug,
+        color: item.color,
+        image: item.image,
+        description: item.description,
+      }
+    })
+
+    return appointments
+  }
+
   @Query(() => [AppointmentModel])
   async appointmentsAll() {
     const page = await Page.find();
