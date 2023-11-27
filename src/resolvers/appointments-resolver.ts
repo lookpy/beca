@@ -166,10 +166,6 @@ export class AppointmentsResolver {
 
     const date = new Date()
 
-    // verificar se o usuário tem créditos suficientes para criar uma nova página
-    // cada página criada consome 180 créditos
-    if (credits < 180) { throw new Error("Insufficient credits") }
-
     const tokenPage = Math.random().toString(36).substring(2, 8)
 
     const appointment = {
@@ -189,8 +185,6 @@ export class AppointmentsResolver {
     const page = new Page(appointment);
 
     try {
-      // atualizar os créditos do usuário
-      await UserClient.updateOne({ _id: id }, { user_credits: credits - 180 })
       await page.save();
 
     } catch (err) {
@@ -220,10 +214,6 @@ export class AppointmentsResolver {
     // horário da criação da página
 
     const date = new Date()
-
-    // verificar se o usuário tem créditos suficientes para criar uma nova página
-    // cada página criada consome 180 créditos
-    if (credits < 180) { throw new Error("Insufficient credits") }
 
     const tokenPage = Math.random().toString(36).substring(2, 8)
 
@@ -262,8 +252,6 @@ export class AppointmentsResolver {
     const page = new Page(appointment);
 
     try {
-      // atualizar os créditos do usuário
-      await UserClient.updateOne({ _id: id }, { user_credits: credits - 180 })
       await page.save();
 
     } catch (err) {
