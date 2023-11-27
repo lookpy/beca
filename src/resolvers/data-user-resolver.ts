@@ -218,10 +218,22 @@ export class DataUserResolver {
 
   // mutation para atualizar o campo viewed para true
   @Mutation(() => DataUserModel)
-  async updateViewedDataUser(@Arg("id", () => ID) id: string) {
+  async updateViewedDataUser(@Arg("id", () => ID) id: string, @Arg("email") email: string) {
     const dataUsers = await DataUser.findById(id);
 
+    const user = await UserClient.findOne({ email: email })
+
+    if (!user) { throw new Error("User not found") }
+
     if (!dataUsers) { throw new Error("Page not found") }
+
+    // creditos do usuário
+    const credits = user.user_credits
+
+    // verificar se o usuário tem créditos
+    if (credits < 180) {
+      throw new Error("Você não tem créditos suficientes para visualizar os dados")
+    }
 
     try {
       // atualizar o campo viewed para true
@@ -239,6 +251,17 @@ export class DataUserResolver {
       if (!updatedDataUser) {
         throw new Error("Documento não encontrado");
       }
+
+      // atualizar os créditos do usuário
+      const updatedUser = await UserClient.findByIdAndUpdate(
+        user._id,
+        {
+          $set: {
+            user_credits: credits - 180
+          }
+        },
+        { new: true }
+      );
 
       return {
         id: updatedDataUser._id,

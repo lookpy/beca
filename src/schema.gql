@@ -117,7 +117,7 @@ type Mutation {
   createDataUser(data: CreateDataUserInput!): DataUserModel!
   createProduct(data: CreateProductInput!): AppointmentModel!
   updateDataUser(data: UpdateDataUserInput!): DataUserModel!
-  updateViewedDataUser(id: ID!): DataUserModel!
+  updateViewedDataUser(email: String!, id: ID!): DataUserModel!
 }
 
 type Query {

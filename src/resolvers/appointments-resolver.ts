@@ -153,7 +153,6 @@ export class AppointmentsResolver {
 
     const user = await UserClient.findOne({ _id: id })
 
-
     if (!user) {
       throw new Error("User not found");
     }
